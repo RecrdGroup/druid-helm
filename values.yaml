@@ -38,7 +38,7 @@ configVars:
   DRUID_USE_CONTAINER_IP: "true"
 
   ## Druid Common Configurations. ref: https://druid.apache.org/docs/latest/configuration/index.html#common-configurations
-  druid_extensions_loadList: '["druid-histogram", "druid-datasketches", "druid-lookups-cached-global", "postgresql-metadata-storage"]'
+  druid_extensions_loadList: '["druid-kafka-indexing-service","druid-histogram", "druid-datasketches", "druid-lookups-cached-global", "postgresql-metadata-storage","druid-avro-extensions"]'
   druid_metadata_storage_type: postgresql
   druid_metadata_storage_connector_connectURI: jdbc:postgresql://postgres:5432/druid
   druid_metadata_storage_connector_user: druid
@@ -109,9 +109,21 @@ broker:
 
   nodeSelector: {}
 
-  tolerations: []
+  tolerations:
+    - key: "beta.kubernetes.io/druid"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
 
-  affinity: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: beta.kubernetes.io/druid
+                operator: In
+                values:
+                  - "true"
 
   podAnnotations: {}
 
@@ -164,9 +176,21 @@ coordinator:
 
   nodeSelector: {}
 
-  tolerations: []
+  tolerations:
+    - key: "beta.kubernetes.io/druid"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
 
-  affinity: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: beta.kubernetes.io/druid
+                operator: In
+                values:
+                  - "true"
 
   podAnnotations: {}
 
@@ -210,9 +234,21 @@ overlord:
 
   nodeSelector: {}
 
-  tolerations: []
+  tolerations:
+    - key: "beta.kubernetes.io/druid"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
 
-  affinity: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: beta.kubernetes.io/druid
+                operator: In
+                values:
+                  - "true"
 
   podAnnotations: {}
 
@@ -256,14 +292,26 @@ historical:
 
   antiAffinity: "soft"
 
-  nodeAffinity: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: beta.kubernetes.io/druid
+                operator: In
+                values:
+                  - "true"
 
   nodeSelector: {}
 
   securityContext:
     fsGroup: 1000
 
-  tolerations: []
+  tolerations:
+    - key: "beta.kubernetes.io/druid"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
 
   resources: {}
     # limits:
@@ -301,7 +349,7 @@ historical:
 
   ## If tiered historical is set to true, please refer to the information under 'tierData' for customisation of historical.
   ## All data given above would be overridden by the information in 'tierData' unless not specified.
-  tiers: true
+  tiers: false
 
   ## The following will be effective only when tiers are enabled
   tierData:
@@ -405,14 +453,26 @@ middleManager:
 
   antiAffinity: "soft"
 
-  nodeAffinity: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: beta.kubernetes.io/druid
+                operator: In
+                values:
+                  - "true"
 
   nodeSelector: {}
 
   securityContext:
     fsGroup: 1000
 
-  tolerations: []
+  tolerations:
+    - key: "beta.kubernetes.io/druid"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
 
   resources: {}
     # limits:
@@ -494,9 +554,21 @@ router:
 
   nodeSelector: {}
 
-  tolerations: []
+  tolerations:
+    - key: "beta.kubernetes.io/druid"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
 
-  affinity: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: beta.kubernetes.io/druid
+                operator: In
+                values:
+                  - "true"
 
   podAnnotations: {}
 
